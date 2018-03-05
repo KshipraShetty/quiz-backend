@@ -9,6 +9,10 @@ module.exports = {
     },
     qid: {
       type: Sequelize.INTEGER,
+      references: {
+        model: 'Questions',
+        key: 'qid',
+      },
     },
     answer: {
       type: Sequelize.STRING,

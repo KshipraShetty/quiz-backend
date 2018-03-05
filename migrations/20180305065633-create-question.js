@@ -9,6 +9,7 @@ module.exports = {
     },
     qid: {
       type: Sequelize.INTEGER,
+      unique: true,
     },
     question: {
       type: Sequelize.STRING,

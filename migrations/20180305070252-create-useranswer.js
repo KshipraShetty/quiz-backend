@@ -9,9 +9,17 @@ module.exports = {
     },
     uid: {
       type: Sequelize.INTEGER,
+      references: {
+        model: 'Users',
+        key: 'uid',
+      },
     },
     qid: {
       type: Sequelize.INTEGER,
+      references: {
+        model: 'Questions',
+        key: 'qid',
+      },
     },
     answer: {
       type: Sequelize.STRING,
