@@ -1,12 +1,13 @@
-'use strict';
+
 module.exports = (sequelize, DataTypes) => {
-  var useranswer = sequelize.define('useranswer', {
+  const useranswer = sequelize.define('useranswer', {
     uid: DataTypes.INTEGER,
     qid: DataTypes.INTEGER,
-    answer: DataTypes.STRING
+    answer: DataTypes.STRING,
   }, {});
-  useranswer.associate = function(models) {
-    // associations can be defined here
+  useranswer.associate = function (models) {
+    useranswer.belongsTo(models.User);
+    useranswer.belongsTo(models.Question);
   };
   return useranswer;
 };

@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     option: DataTypes.JSON,
   }, {});
   Question.associate = function (models) {
-    // associations can be defined here
+
   };
   return Question;
 };
