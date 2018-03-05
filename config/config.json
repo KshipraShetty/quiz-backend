@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "kshiprasshetty",
+    "password": null,
+    "database": "new_quiz_dev",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "kshiprasshetty",
+    "password": null,
+    "database": "new_quiz_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "kshiprasshetty",
+    "password": null,
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
