@@ -1,12 +1,12 @@
 
 module.exports = (sequelize, DataTypes) => {
-  const Question = sequelize.define('Question', {
-    qid: DataTypes.INTEGER,
+  const question = sequelize.define('question', {
+    questionId: DataTypes.INTEGER,
     question: DataTypes.STRING,
     option: DataTypes.JSON,
   }, {});
-  Question.associate = function (models) {
-
+  question.associate = function (models) {
+    // Question.hasMany(models.useranswer);
   };
-  return Question;
+  return question;
 };

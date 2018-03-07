@@ -1,13 +1,13 @@
 
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('Questions', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('questions', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    qid: {
+    questionId: {
       type: Sequelize.INTEGER,
       unique: true,
     },
@@ -26,5 +26,5 @@ module.exports = {
       type: Sequelize.DATE,
     },
   }),
-  down: (queryInterface, Sequelize) => queryInterface.dropTable('Questions'),
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('questions'),
 };

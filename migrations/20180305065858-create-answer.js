@@ -7,12 +7,8 @@ module.exports = {
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    qid: {
+    questionId: {
       type: Sequelize.INTEGER,
-      references: {
-        model: 'Questions',
-        key: 'qid',
-      },
     },
     answer: {
       type: Sequelize.STRING,

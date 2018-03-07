@@ -9,8 +9,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
+    "axios-test": "^1.0.0",
     "hapi": "^16.6.3",
-    "sequelize": "^4.35.2"
+    "joi": "^13.1.2",
+    "pg": "^7.4.1",
+    "sequelize": "^4.35.2",
+    "sequelize-cli": "^4.0.0",
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
     "eslint": "^4.18.2",

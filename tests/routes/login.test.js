@@ -7,7 +7,7 @@ describe('Check for login api', () => {
       username: 'hello',
     }).then(() => done());
   });
-  test('Check for statusCode of a new user', (done) => {
+  test('Check for statusCode for a new user', (done) => {
     const options = {
       method: 'POST',
       url: '/login',
@@ -16,11 +16,24 @@ describe('Check for login api', () => {
       },
     };
     server.inject(options, (response) => {
-      expect(response.statusCode).toBe(201);
+      expect(response.result.statusCode).toBe(201);
       done();
     });
   }, 15000);
-  test('Check for a statusCode of invalid user entry', (done) => {
+  test('Check for statusCode for a existing user', (done) => {
+    const options = {
+      method: 'POST',
+      url: '/login',
+      payload: {
+        username: 'hello',
+      },
+    };
+    server.inject(options, (response) => {
+      expect(response.result.statusCode).toBe(200);
+      done();
+    });
+  }, 15000);
+  test('Check for a statusCode of invalid user entry interms of type', (done) => {
     const options = {
       method: 'POST',
       url: '/login',
@@ -34,7 +47,7 @@ describe('Check for login api', () => {
     });
   });
 
-  test('Check for a statusCode of invalid user entry', (done) => {
+  test('Check for a statusCode of invalid user entry interms of length', (done) => {
     const options = {
       method: 'POST',
       url: '/login',

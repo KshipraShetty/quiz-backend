@@ -7,19 +7,11 @@ module.exports = {
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    uid: {
+    userId: {
       type: Sequelize.INTEGER,
-      references: {
-        model: 'Users',
-        key: 'uid',
-      },
     },
-    qid: {
+    questionId: {
       type: Sequelize.INTEGER,
-      references: {
-        model: 'Questions',
-        key: 'qid',
-      },
     },
     answer: {
       type: Sequelize.STRING,
