@@ -16,10 +16,11 @@ describe('Check for login api', () => {
       },
     };
     server.inject(options, (response) => {
+      console.log(response);
       expect(response.result.statusCode).toBe(201);
       done();
     });
-  }, 15000);
+  }, 10000);
   test('Check for statusCode for a existing user', (done) => {
     const options = {
       method: 'POST',
@@ -32,7 +33,7 @@ describe('Check for login api', () => {
       expect(response.result.statusCode).toBe(200);
       done();
     });
-  }, 15000);
+  });
   test('Check for a statusCode of invalid user entry interms of type', (done) => {
     const options = {
       method: 'POST',

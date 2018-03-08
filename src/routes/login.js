@@ -1,6 +1,7 @@
-const axios = require('axios');
+
 const models = require('../../models');
 const joi = require('joi');
+const rp = require('request-promise');
 
 const createUsers = username =>
   models.user.findOrCreate({
@@ -31,10 +32,13 @@ const checkQuestions = () => models.question.findAll()
 
 const populateQuestionDatabase = () => {
   const allQuestions = [];
+  const url = 'https://5gj1qvkc5h.execute-api.us-east-1.amazonaws.com/dev/allQuestions';
   const axiosGet =
-  axios.get('https://5gj1qvkc5h.execute-api.us-east-1.amazonaws.com/dev/allQuestions')
+  rp(url)
     .then((questionsFromDB) => {
-      questionsFromDB.data.allQuestions.forEach((eachQuestion) => {
+      const questionsFromData = JSON.parse(questionsFromDB);
+      console.log(JSON.parse(questionsFromDB).allQuestions, '#########################');
+      questionsFromData.allQuestions.forEach((eachQuestion) => {
         const newQuest = {};
         newQuest.option = {};
         for (const key in eachQuestion) {
@@ -56,11 +60,12 @@ const populateAnswers = () => {
   const allPromise = [];
   return models.question.findAll()
     .then(allQuestions => allQuestions.map((eachQuestion) => {
-      axios.get(`https://5gj1qvkc5h.execute-api.us-east-1.amazonaws.com/dev/findAnswerById/${eachQuestion.questionId}`)
+      rp(`https://5gj1qvkc5h.execute-api.us-east-1.amazonaws.com/dev/findAnswerById/${eachQuestion.questionId}`)
         .then((answers) => {
+          const answerMod = JSON.parse(answers);
           answerDB = models.answer.create({
             questionId: eachQuestion.questionId,
-            answer: answers.data.answer,
+            answer: answerMod.answer,
 
           });
           allPromise.push(answerDB);
@@ -102,22 +107,24 @@ module.exports = [
           username: joi.string().min(3).required(),
         },
       },
-      handler: (req, resp) => createUsers(req.payload.username)
-        .then(userStatus => checkQuestions()
-          .then(questionStatus => createAnswers()
-            .then(() =>
-              getAnswerOfUser(req.payload.username)
-                .then((userAnswers) => {
-                  let statusCode = 200;
-                  if (userStatus[1]) {
-                    statusCode = 201;
-                  }
-                  resp({
-                    userAnswers,
-                    questionStatus,
-                    statusCode,
-                  });
-                })))),
+      handler: (req, resp) => {
+        createUsers(req.payload.username)
+          .then(userStatus => checkQuestions()
+            .then(questionStatus => createAnswers()
+              .then(() =>
+                getAnswerOfUser(req.payload.username)
+                  .then((userAnswers) => {
+                    let statusCode = 200;
+                    if (userStatus[1]) {
+                      statusCode = 201;
+                    }
+                    resp({
+                      userAnswers,
+                      questionStatus,
+                      statusCode,
+                    });
+                  }))));
+      },
     },
   },
 ];
