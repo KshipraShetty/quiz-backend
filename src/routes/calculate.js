@@ -78,6 +78,26 @@ const leaderBoard = () => models.score.findAll({
   limit: 5,
 });
 
+const fetchUsers = (allScores) => {
+  const scores = [];
+  return models.user.findAll()
+    .then((allUsers) => {
+      allScores.forEach((eachScore) => {
+        allUsers.forEach((eachUser) => {
+          if (eachUser.id === eachScore.userId) {
+            scores.push({
+              username: eachUser.username,
+              score: eachScore.score,
+              userId: eachScore.userId,
+            });
+          }
+        });
+      });
+      scores.sort((a, b) => b.score - b.score);
+      return scores;
+    });
+};
+
 module.exports = [{
   method: 'POST',
   path: '/calculateScore',
@@ -87,7 +107,8 @@ module.exports = [{
         if (status) {
           return calculateScore(userAnswers, req.payload.userId)
             .then(() => leaderBoard()
-              .then(allScores => resp(allScores)));
+              .then(allScores => fetchUsers(allScores)
+                .then(allLeaderBoardScores => resp(allLeaderBoardScores))));
         }
 
         return resp('Answer all questions');

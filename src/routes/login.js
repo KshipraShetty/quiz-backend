@@ -104,7 +104,11 @@ module.exports = [
     config: {
       validate: {
         payload: {
-          username: joi.string().min(3).required(),
+          username: joi.string().min(3).max(10).alphanum()
+            .required(),
+        },
+        failAction(request, reply, source, error) {
+          reply({ statusCode: 400 });
         },
       },
       handler: (req, resp) => {
