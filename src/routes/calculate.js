@@ -13,10 +13,10 @@ const checkIfAllAnswered = (length, userAnswers) => models.question.count()
 
 const getUserAnswer = (userId) => {
   let userAnswers;
-  let length;
+  let leng;
   return models.useranswer.findAllUserAnswers(userId)
     .then((allAnswersByUser) => {
-      length = allAnswersByUser.length;
+      leng = allAnswersByUser.length;
       userAnswers = allAnswersByUser.map((eachAnswer) => {
         console.log(eachAnswer.dataValues);
         const newVal = {};
@@ -25,7 +25,7 @@ const getUserAnswer = (userId) => {
         newVal.answer = eachAnswer.dataValues.answer;
         return newVal;
       });
-      return checkIfAllAnswered(length, userAnswers);
+      return checkIfAllAnswered(leng, userAnswers);
     });
 };
 

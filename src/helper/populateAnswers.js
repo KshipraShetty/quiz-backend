@@ -9,11 +9,11 @@ const populateAnswers = () => {
       rp(`https://5gj1qvkc5h.execute-api.us-east-1.amazonaws.com/dev/findAnswerById/${eachQuestion.questionId}`)
         .then((answers) => {
           const answerMod = JSON.parse(answers);
-          answerDB = models.answer.create({
-            questionId: eachQuestion.questionId,
-            answer: answerMod.answer,
+          answerDB = models.answer.createAnswer(
+            eachQuestion.questionId,
+            answerMod.answer,
 
-          });
+          );
           allPromise.push(answerDB);
         });
       return Promise.all(allPromise);

@@ -8,5 +8,9 @@ module.exports = (sequelize, DataTypes) => {
   //  answer.hasMany(models.Question);
   };
   answer.findAllAnswers = () => answer.findAll();
+  answer.createAnswer = (questionId, answers) => answer.create({
+    questionId,
+    answer: answers,
+  });
   return answer;
 };

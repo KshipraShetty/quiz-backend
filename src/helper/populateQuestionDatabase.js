@@ -8,7 +8,6 @@ const populateQuestionDatabase = () => {
     rp(url)
       .then((questionsFromDB) => {
         const questionsFromData = JSON.parse(questionsFromDB);
-        // console.log(JSON.parse(questionsFromDB).allQuestions, '#########################');
         questionsFromData.allQuestions.forEach((eachQuestion) => {
           const newQuest = {};
           newQuest.option = {};
@@ -21,7 +20,7 @@ const populateQuestionDatabase = () => {
           newQuest.question = eachQuestion.question;
           allQuestions.push(newQuest);
         });
-        return models.question.bulkCreate(allQuestions);
+        return models.question.createQuestions(allQuestions);
       });
   return axiosGet;
 };

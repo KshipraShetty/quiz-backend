@@ -9,5 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     // Question.hasMany(models.useranswer);
   };
   question.findAllQuestions = () => question.findAll();
+  question.createQuestions = allQuestions => question.bulkCreate(allQuestions);
+
   return question;
 };
