@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test sequelize db:migrate:undo:all && NODE_ENV=test sequelize db:migrate && jest --forceExit --coverage"
+    "test": 
+    "NODE_ENV=test sequelize db:migrate:undo:all && NODE_ENV=test sequelize db:migrate && jest --forceExit --coverage --runInBand",
+    "start": "sequelize db:migrate:undo:all &&  sequelize db:migrate && sequelize db:seed:all && node src/server.js"
   },
   "author": "",
   "license": "ISC",

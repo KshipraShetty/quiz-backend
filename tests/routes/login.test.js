@@ -2,10 +2,30 @@ const server = require('../../src/server');
 const models = require('../../models');
 
 describe('Check for login api', () => {
+  const question = [{
+    questionId: 12,
+    question: 'What is the capital of India',
+    option: {
+      option1: 'New Delhi',
+      option2: 'MP',
+      option3: 'UP',
+      option4: 'Bangalore',
+    },
+  }];
+  const answer = [{
+    questionId: 12,
+    answer: 'New Delhi',
+  }];
   beforeAll((done) => {
     models.user.create({
       username: 'hello',
-    }).then(() => done());
+    }).then(() => {
+      models.question.bulkCreate(question)
+        .then(() => {
+          models.answer.bulkCreate(answer)
+            .then(() => done());
+        });
+    });
   });
   test('Check for statusCode for a new user', (done) => {
     const options = {
@@ -16,11 +36,10 @@ describe('Check for login api', () => {
       },
     };
     server.inject(options, (response) => {
-      console.log(response);
       expect(response.result.statusCode).toBe(201);
       done();
     });
-  }, 10000);
+  });
   test('Check for statusCode for a existing user', (done) => {
     const options = {
       method: 'POST',
@@ -66,6 +85,15 @@ describe('Check for login api', () => {
       where: {
         username: 'hello',
       },
-    }).then(() => done());
+    }).then(() => {
+      models.question.destroy({
+        where: {},
+      })
+        .then(() => {
+          models.answer.destroy({
+            where: {},
+          }).then(() => done());
+        });
+    });
   });
 });

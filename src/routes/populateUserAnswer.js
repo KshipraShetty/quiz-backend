@@ -1,16 +1,17 @@
 const models = require('../../models');
 
-const populateUserAnswer = (userId, answer, questionId) => models.useranswer.findOrCreate({
-  where: {
-    userId,
-    questionId,
-  },
-  defaults: {
-    userId,
-    answer,
-    questionId,
-  },
-});
+const populateUserAnswer = (userId, answer, questionId) =>
+  models.useranswer.findOrCreate({
+    where: {
+      userId,
+      questionId,
+    },
+    defaults: {
+      userId,
+      answer,
+      questionId,
+    },
+  });
 
 
 const updateAnswer = (userId, answer, questionId) =>
@@ -20,6 +21,7 @@ const updateAnswer = (userId, answer, questionId) =>
       userId,
     },
   })
+  // models.useranswer.findOneUser(questionId, userId)
     .then((user) => {
       user.updateAttributes({
         answer,

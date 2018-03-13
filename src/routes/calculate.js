@@ -14,22 +14,19 @@ const checkIfAllAnswered = (length, userAnswers) => models.question.count()
 const getUserAnswer = (userId) => {
   let userAnswers;
   let length;
-  return models.useranswer.findAll({
-    where: {
-      userId,
-    },
-  }).then((allAnswersByUser) => {
-    length = allAnswersByUser.length;
-    userAnswers = allAnswersByUser.map((eachAnswer) => {
-      console.log(eachAnswer.dataValues);
-      const newVal = {};
+  return models.useranswer.findAllUserAnswers(userId)
+    .then((allAnswersByUser) => {
+      length = allAnswersByUser.length;
+      userAnswers = allAnswersByUser.map((eachAnswer) => {
+        console.log(eachAnswer.dataValues);
+        const newVal = {};
 
-      newVal.questionId = eachAnswer.dataValues.questionId;
-      newVal.answer = eachAnswer.dataValues.answer;
-      return newVal;
+        newVal.questionId = eachAnswer.dataValues.questionId;
+        newVal.answer = eachAnswer.dataValues.answer;
+        return newVal;
+      });
+      return checkIfAllAnswered(length, userAnswers);
     });
-    return checkIfAllAnswered(length, userAnswers);
-  });
 };
 
 const calculateScore = (userAnswers, userId) => {
@@ -49,16 +46,7 @@ const calculateScore = (userAnswers, userId) => {
           }
         }
       }
-      return models.score.findOrCreate({
-        where: {
-          userId,
-        },
-        defaults: {
-          userId,
-          score,
-        },
-
-      })
+      return models.score.findOrCreateScore(userId, score)
         .spread((createdObj, created) => {
           if (created) {
             return createdObj;

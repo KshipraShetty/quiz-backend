@@ -1,90 +1,30 @@
 
 const models = require('../../models');
 const joi = require('joi');
-const rp = require('request-promise');
+// const rp = require('request-promise');
+const populateQuestionDatabase = require('../helper/populateQuestionDatabase');
+const populateAnswers = require('../helper/populateAnswers');
+const fetchAnswerDatabase = require('../helper/fetchAnswerDatabase');
+const fetchQuestionDatabase = require('../helper/fetchQuestionDatabase');
 
 const createUsers = username =>
-  models.user.findOrCreate({
-    where: {
-      username,
-    },
-    defaults: {
-      username,
-    },
-  });
-// .then((response) => {
-//   if (response[1]) {
-//     return Promise.resolve('not exists');
-//   }
-//   return Promise.resolve('exists');
-// });
+  models.user.presentOrNot(username);
 
 
-const fetchQuestionDatabase = () => models.question.findAll()
-  .then(questions => questions);
-
-const checkQuestions = () => models.question.findAll()
+const checkQuestions = () => models.question.findAllQuestions()
   .then((allQuestions) => {
     if (allQuestions.length === 0) {
       return populateQuestionDatabase();
-    } return fetchQuestionDatabase();
+    } return models.question.findAllQuestions();
   });
 
-const populateQuestionDatabase = () => {
-  const allQuestions = [];
-  const url = 'https://5gj1qvkc5h.execute-api.us-east-1.amazonaws.com/dev/allQuestions';
-  const axiosGet =
-  rp(url)
-    .then((questionsFromDB) => {
-      const questionsFromData = JSON.parse(questionsFromDB);
-      console.log(JSON.parse(questionsFromDB).allQuestions, '#########################');
-      questionsFromData.allQuestions.forEach((eachQuestion) => {
-        const newQuest = {};
-        newQuest.option = {};
-        for (const key in eachQuestion) {
-          if (key.indexOf('option') > -1) {
-            newQuest.option[key] = eachQuestion[key];
-          }
-        }
-        newQuest.questionId = eachQuestion.questionId;
-        newQuest.question = eachQuestion.question;
-        allQuestions.push(newQuest);
-      });
-      return models.question.bulkCreate(allQuestions);
-    });
-  return axiosGet;
-};
-
-const populateAnswers = () => {
-  let answerDB;
-  const allPromise = [];
-  return models.question.findAll()
-    .then(allQuestions => allQuestions.map((eachQuestion) => {
-      rp(`https://5gj1qvkc5h.execute-api.us-east-1.amazonaws.com/dev/findAnswerById/${eachQuestion.questionId}`)
-        .then((answers) => {
-          const answerMod = JSON.parse(answers);
-          answerDB = models.answer.create({
-            questionId: eachQuestion.questionId,
-            answer: answerMod.answer,
-
-          });
-          allPromise.push(answerDB);
-        });
-      return Promise.all(allPromise);
-    }));
-};
-
-
-const fetchAnswerDatabase = () => models.answer.findAll()
-  .then(answers => answers);
-
 const createAnswers = () =>
-  models.answer.findAll()
+  models.answer.findAllAnswers()
     .then((allAnswers) => {
       if (allAnswers.length === 0) {
         return populateAnswers();
       }
-      return fetchAnswerDatabase();
+      return models.answer.findAllAnswers();
     });
 
 
@@ -127,7 +67,10 @@ module.exports = [
                       questionStatus,
                       statusCode,
                     });
-                  }))));
+                  }))))
+          .catch(() => resp({
+            statusCode: 400,
+          }));
       },
     },
   },

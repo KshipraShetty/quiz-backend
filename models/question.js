@@ -8,5 +8,6 @@ module.exports = (sequelize, DataTypes) => {
   question.associate = function (models) {
     // Question.hasMany(models.useranswer);
   };
+  question.findAllQuestions = () => question.findAll();
   return question;
 };
