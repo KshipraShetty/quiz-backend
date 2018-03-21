@@ -10,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
   user.presentOrNot = username => user.findOrCreate({
     where: { username },
   });
-  user.updateAnswer = answer => user.updateAttributes({
-    answer,
-  });
+  // user.updateAnswer = answer => user.updateAttributes({
+  //   answer,
+  // });
   return user;
 };

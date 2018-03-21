@@ -4,8 +4,8 @@ const joi = require('joi');
 // const rp = require('request-promise');
 const populateQuestionDatabase = require('../helper/populateQuestionDatabase');
 const populateAnswers = require('../helper/populateAnswers');
-const fetchAnswerDatabase = require('../helper/fetchAnswerDatabase');
-const fetchQuestionDatabase = require('../helper/fetchQuestionDatabase');
+// const fetchAnswerDatabase = require('../helper/fetchAnswerDatabase');
+// const fetchQuestionDatabase = require('../helper/fetchQuestionDatabase');
 
 const createUsers = username =>
   models.user.presentOrNot(username);
